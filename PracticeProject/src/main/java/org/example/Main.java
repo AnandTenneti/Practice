@@ -2,8 +2,8 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        int a = 5;
-        int b = 4;
+        int a = 465;
+        int b = 430;
         int sum = a + b;
         System.out.println("Sum of the two numbers is " + sum);
         int c = 7;
