@@ -1,0 +1,12 @@
+Feature: Testing Login functionality
+
+
+  Scenario: Successful Login with Valid Credentials
+    Given User launch chrome browser
+    When  User opens URL 'https://opensource-demo.orangehrmlive.com/'
+    And   User enters Email as "Admin" and Password as "admin123"
+    And   Click on Login
+    Then  Page title should be "Dashboard / nopCommerce administration"
+    When  User clicks on Logout button
+    Then  Page title should be "OrangeHRM"
+    And   Close browser
