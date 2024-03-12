@@ -77,10 +77,10 @@ public class SearchCustomerPage extends LoadableComponent<SearchCustomerPage> {
         return tableColumns.size();
     }
 
-   public int searchCustomerByEmail() {
-       List<WebElement> emailIds = driver.findElements(By.xpath("//table[@id='customers-grid']/tbody/tr[1]/td[2]"));
-       int size = emailIds.size();
-       return size;
+    public int searchCustomerByEmail() {
+        List<WebElement> emailIds = driver.findElements(By.xpath("//table[@id='customers-grid']/tbody/tr[1]/td[2]"));
+        int size = emailIds.size();
+        return size;
 
 //        boolean flag = false;
 //        for (int i = 1; i <= getNumberOfRows(); i++) {
@@ -101,6 +101,22 @@ public class SearchCustomerPage extends LoadableComponent<SearchCustomerPage> {
         int size = names.size();
         return size;
 
+    }
+
+    public void clickOnEditButton() {
+        WebElement customerEmail = driver.findElement(By.cssSelector("table[id='customers-grid'] tr.odd"));
+        List<WebElement> customerEmailValues = customerEmail.findElements(By.cssSelector("td"));
+        for (WebElement customerEmailValue : customerEmailValues) {
+            if (customerEmailValue.getText().contains("Edit")) {
+                customerEmailValue.click();
+            }
+        }
+//        for (WebElement customerEmail : customerEmails) {
+//            if (customerEmail.findElement(By.xpath("/td")).getText().contains("victoria_victoria")) {
+//                customerEmail.findElement(By.xpath("/a")).click();
+//                break;
+//            }
+//        }
     }
 
 

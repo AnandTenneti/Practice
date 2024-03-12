@@ -10,6 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import pageObjects.CustomerPage;
 import pageObjects.LoginPage;
 
+import java.util.ArrayList;
+
 public class BaseClass {
     public WebDriver driver;
 
@@ -18,4 +20,9 @@ public class BaseClass {
         return generatedString;
     }
 
+
+
+
 }
+
+

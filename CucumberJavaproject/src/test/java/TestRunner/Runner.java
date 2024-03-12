@@ -7,9 +7,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = ".//features/customers.feature",
+        features = "src/test/java/features/customers.feature",
         glue = "stepdefinitions",
         dryRun = true,
+        tags= "@Products",
         plugin = {"pretty", "html:target/test-output.html"},
         monochrome = true
 )

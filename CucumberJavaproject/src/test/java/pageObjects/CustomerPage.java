@@ -32,9 +32,6 @@ public class CustomerPage extends LoadableComponent<CustomerPage> {
     @FindBy(how = How.ID, using = "Password")
     private WebElement password;
 
-    @FindBy(how = How.ID, using = "//a[@href='/Admin/Customer/Create']")
-    private WebElement addNewButton;
-
     @FindBy(how = How.XPATH, using = "//button[@name='save']")
     private WebElement saveButton;
 
@@ -56,6 +53,23 @@ public class CustomerPage extends LoadableComponent<CustomerPage> {
     @FindBy(how = How.ID, using = "Email")
     private WebElement emailField;
 
+    @FindBy(how = How.CSS, using = "div.validation-summary-errors ul>li")
+    private WebElement emailValidationError;
+
+    @FindBy(how = How.ID, using = "customer-delete")
+    private WebElement deleteButton;
+
+    @FindBy(how = How.CSS, using = "div#customermodel-Delete-delete-confirmation")
+    private WebElement modalDialog;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='modal-footer']/button[contains(text(),'Delete')]")
+    private WebElement confirmDeleteButton;
+
+    @FindBy(how = How.NAME, using = "importexcel")
+    private WebElement importButton;
+
+    @FindBy(how = How.ID, using = "importexcelfile")
+    private WebElement importExcelFile;
 
     public void clickOnSaveButton() {
         saveButton.click();
@@ -87,12 +101,38 @@ public class CustomerPage extends LoadableComponent<CustomerPage> {
     public void setEmail(String email) {
         emailField.sendKeys(email);
     }
+
     public void setFirstName(String fname) {
         firstName.sendKeys(fname);
     }
+
     public void setLastName(String lname) {
         lastName.sendKeys(lname);
     }
 
+    public String getEmailValidationErrorMessage() {
+        return emailValidationError.getText();
+    }
+
+    public void clickOnDeleteButton() {
+        deleteButton.click();
+    }
+
+    public boolean isModalDisplayed() {
+        return modalDialog.isDisplayed();
+    }
+
+    public void clickOnDeleteInConfirmationDialog() throws Exception {
+        confirmDeleteButton.submit();
+    }
+
+    public void clickOnImportButton() throws Exception {
+        importButton.click();
+        driver.findElement(By.id("importexcelfile"))
+                .sendKeys("/Users/tennetikiran/IdeaProjects/CucumberJavaproject/src/test/resources/SKU.xlsx");
+        Thread.sleep(5000);
+        driver.findElement(By.cssSelector("button.btn-primary")).submit();
+
+    }
 
 }

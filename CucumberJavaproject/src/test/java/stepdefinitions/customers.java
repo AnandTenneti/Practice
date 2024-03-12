@@ -13,7 +13,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import pageObjects.CustomerPage;
 import pageObjects.LoginPage;
+import pageObjects.ProductsPage;
 import pageObjects.SearchCustomerPage;
+
+import java.io.IOException;
 
 public class customers extends BaseClass {
 
@@ -23,19 +26,20 @@ public class customers extends BaseClass {
 
     SearchCustomerPage srchCustomerPage;
 
+    ProductsPage productsPage;
 
-    @Given("Launch chrome browser")
-    public void launch_chrome_browser() {
+    @Before
+    public void setup() {
+        System.out.println("Hello, Execution of test started");
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-
     }
+
 
     @When("User opens URL {string}")
     public void user_opens_url(String URL) {
         loginPage = new LoginPage(driver);
-        URL = "http://admin-demo.nopcommerce.com/login";
-        driver.get("https://admin-demo.nopcommerce.com/login?ReturnUrl=%2Fadmin%2F");
+        driver.get(URL);
     }
 
     @When("User enters email as {string} and Password as {string}")
@@ -97,17 +101,17 @@ public class customers extends BaseClass {
         // Assert.assertEquals(message, customerPage.getMessage());
         Assert.assertTrue(customerPage.getMessage().contains(message));
     }
-
-    @Then("close browser")
-    public void close_browser() {
-        driver.quit();
-    }
+//
+//    @Then("close browser")
+//    public void close_browser() {
+//        driver.quit();
+//    }
 
 
     @When("Enter customer Email")
     public void enter_customer_email() {
         srchCustomerPage = new SearchCustomerPage(driver);
-        srchCustomerPage.setEmail("victoria_victoria@nopCommerce.com");
+        srchCustomerPage.setEmail("abcd@gmail.com");
     }
 
     @Then("User should find Email in the Search table")
@@ -133,9 +137,10 @@ public class customers extends BaseClass {
     }
 
     @When("click on Search button")
-    public void click_on_search_button() {
+    public void click_on_search_button() throws InterruptedException {
         SearchCustomerPage srchCustomerPage = new SearchCustomerPage(driver);
         srchCustomerPage.clickOnSearchButton();
+        Thread.sleep(4000);
     }
 
     @Then("User should find Name in the Search table")
@@ -143,5 +148,108 @@ public class customers extends BaseClass {
         SearchCustomerPage srchCustomerPage = new SearchCustomerPage(driver);
         int customerNameList = srchCustomerPage.searchCustomerByName();
         Assert.assertEquals(1, customerNameList);
+    }
+
+    @When("user clicks on Catalog menu")
+    public void user_clicks_on_catalog_menu() throws Exception {
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.clickOnCatalogMenu();
+
+    }
+
+    @And("user clicks on Products menu item")
+    public void user_clicks_on_products_menu_item() {
+        productsPage = new ProductsPage(driver);
+        productsPage.clickOnProductsMenuItem();
+    }
+
+    @And("user clicks on Add new button")
+    public void userClicksOnAddNewButton() {
+        productsPage.clickOnAddNewButton();
+    }
+
+    @Then("user can view Add new product page")
+    public void userCanViewAddNewProductPage() {
+        String pageTitle = "Add a new product";
+        Assert.assertTrue(productsPage.getPageTitle().contains(pageTitle));
+    }
+
+    @When("user enter product info")
+    public void user_enter_product_info() throws InterruptedException {
+        productsPage.setProductName();
+        productsPage.addProductDescription();
+        Thread.sleep(5000);
+        productsPage.selectProductCategory();
+        Thread.sleep(5000);
+    }
+
+    @When("click on Export button with selected products option")
+    public void click_on_export_button_with_selected_products_option() throws Exception{
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.clickonExport();
+        Thread.sleep(5000);
+    }
+
+    @Then("User can view {string} message is displayed")
+    public void user_can_view_message_is_displayed(String string) {
+       productsPage = new ProductsPage(driver);
+       Assert.assertTrue(productsPage.verifyAlertMessage().contains(string));
+    }
+
+    @And("click on Product Save button")
+    public void clickOnProductSaveButton() {
+        productsPage.saveProductDetails();
+    }
+
+    @Then("User can view product configuration message {string}")
+    public void user_can_view_product_configuration_message(String message) {
+        // Assert.assertEquals(message, customerPage.getMessage());
+        Assert.assertTrue(productsPage.getMessage().contains(message));
+    }
+
+    @After
+    public void close() {
+        driver.quit();
+    }
+
+    @When("Enter Product Name")
+    public void enter_product_name() throws Exception {
+        productsPage.enterProductName();
+        Thread.sleep(5000);
+    }
+
+
+    @When("click on Search button in Products")
+    public void clickOnSearchButtonInProducts() throws Exception {
+        productsPage.clickOnSearchButton();
+    }
+
+    @When("user enters invalid email address")
+    public void user_enters_invalid_email_address() {
+        customerPage.setEmail("a");
+    }
+
+    @Then("User can view validation message {string}")
+    public void user_can_view_validation_message(String emailErrorMessage) {
+        emailErrorMessage = "Please enter a valid email address.";
+        Assert.assertEquals(emailErrorMessage, customerPage.getEmailValidationErrorMessage());
+    }
+
+    @When("select the result and click on Delete button")
+    public void select_the_result_and_click_on_delete_button() throws Exception {
+        srchCustomerPage.clickOnEditButton();
+        customerPage = new CustomerPage(driver);
+        customerPage.clickOnDeleteButton();
+        Thread.sleep(10000);
+        Assert.assertTrue(customerPage.isModalDisplayed());
+        customerPage.clickOnDeleteInConfirmationDialog();
+        Thread.sleep(10000);
+    }
+
+    @And("click on Import button")
+    public void click_on_import_button() throws Exception {
+        customerPage = new CustomerPage(driver);
+        customerPage.clickOnImportButton();
+        Thread.sleep(10000);
     }
 }

@@ -1,6 +1,7 @@
 package org.example;
 
 
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -23,7 +24,8 @@ public class Requests {
        String responseBody = response.asString();
         System.out.println(responseBody);
 
-
+        int id = response.then().contentType(ContentType.JSON).extract().;
+        System.out.println(id);
        // List<String> ids = jsonPathObj.get("namw");
 
 
